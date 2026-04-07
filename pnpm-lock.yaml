@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cmtlyt/logger':
+        specifier: ^0.5.0
+        version: 0.5.0
       '@hono/node-server':
         specifier: ^1.19.12
         version: 1.19.12(hono@4.12.10)
@@ -30,6 +33,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.5.0
         version: 20.5.0
+      '@hono/event-emitter':
+        specifier: ^2.0.0
+        version: 2.0.0(hono@4.12.10)
       '@hono/vite-dev-server':
         specifier: ^0.25.1
         version: 0.25.1(hono@4.12.10)
@@ -126,6 +132,9 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@cmtlyt/logger@0.5.0':
+    resolution: {integrity: sha512-eogo1+NDHpKBwnPi00jokKqWGGKWgMPFtUyIyIIbmUQTM+RYU4ZTGsd8SK1d+lAve97ImoUPBijBBecpCTtb7w==}
 
   '@commitlint/cli@20.5.0':
     resolution: {integrity: sha512-yNkyN/tuKTJS3wdVfsZ2tXDM4G4Gi7z+jW54Cki8N8tZqwKBltbIvUUrSbT4hz1bhW/h0CdR+5sCSpXD+wMKaQ==}
@@ -372,6 +381,12 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@hono/event-emitter@2.0.0':
+    resolution: {integrity: sha512-7/zg7hfPh9lncYCxU3avk40vGhiqP4D5NvmaNX+8QxXivIkrLckSia5P4Nz6PH+A1T8Aj3yFlONf4AiX5rqaEA==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      hono: '*'
 
   '@hono/node-server@1.19.12':
     resolution: {integrity: sha512-txsUW4SQ1iilgE0l9/e9VQWmELXifEFvmdA1j6WFh/aFPj99hIntrSsq/if0UWyGVkmrRPKA1wCeP+UCr1B9Uw==}
@@ -1134,6 +1149,10 @@ packages:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
     engines: {node: '>=12'}
 
+  yoctocolors@2.1.2:
+    resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
+    engines: {node: '>=18'}
+
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
@@ -1186,6 +1205,10 @@ snapshots:
 
   '@biomejs/cli-win32-x64@2.4.10':
     optional: true
+
+  '@cmtlyt/logger@0.5.0':
+    optionalDependencies:
+      yoctocolors: 2.1.2
 
   '@commitlint/cli@20.5.0(@types/node@20.19.39)(conventional-commits-parser@6.4.0)(typescript@5.9.3)':
     dependencies:
@@ -1402,6 +1425,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.27.7':
     optional: true
+
+  '@hono/event-emitter@2.0.0(hono@4.12.10)':
+    dependencies:
+      hono: 4.12.10
 
   '@hono/node-server@1.19.12(hono@4.12.10)':
     dependencies:
@@ -2026,5 +2053,8 @@ snapshots:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
+
+  yoctocolors@2.1.2:
+    optional: true
 
   zod@4.3.6: {}
