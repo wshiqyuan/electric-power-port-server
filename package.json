@@ -14,7 +14,10 @@
 		"@hono/node-server": "^1.19.12",
 		"@hono/zod-openapi": "^1.2.4",
 		"@scalar/hono-api-reference": "^0.10.6",
+		"dotenv": "^17.4.1",
+		"drizzle-orm": "^0.45.2",
 		"hono": "^4.12.10",
+		"mysql2": "^3.20.0",
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
@@ -24,6 +27,7 @@
 		"@hono/event-emitter": "^2.0.0",
 		"@hono/vite-dev-server": "^0.25.1",
 		"@types/node": "^20.11.17",
+		"drizzle-kit": "^0.31.10",
 		"husky": "^9.1.7",
 		"tsx": "^4.7.1",
 		"typescript": "^5.8.3",
