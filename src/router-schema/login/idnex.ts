@@ -1,6 +1,6 @@
 import { z } from "@hono/zod-openapi";
 
-export const paramSchema = z.object({
+export const loginRequestSchema = z.object({
 	username: z.string().min(1).openapi({
 		description: "User name",
 		example: "zhangsan",

@@ -1,5 +1,8 @@
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
-import { paramSchema, userInfoSchema } from "@/router-schema/login/idnex";
+import {
+	loginRequestSchema,
+	userInfoSchema,
+} from "@/router-schema/login/idnex";
 import type { HonoEnv } from "@/types";
 import { logger } from "@/utils/logger";
 
@@ -8,9 +11,15 @@ const app = new OpenAPIHono<HonoEnv>();
 export const loginRoute = app.openapi(
 	createRoute({
 		path: "/login",
-		method: "get",
+		method: "post",
 		request: {
-			query: paramSchema,
+			body: {
+				content: {
+					"application/json": {
+						schema: loginRequestSchema,
+					},
+				},
+			},
 		},
 		responses: {
 			200: {
