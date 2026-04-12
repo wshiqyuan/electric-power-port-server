@@ -11,7 +11,7 @@ export const menuConfig = mysqlTable(
 	"menu_config",
 	{
 		id: int().autoincrement().primaryKey(),
-		parentId: int().notNull(),
+		parentId: int(),
 		name: varchar({ length: 50 }).notNull(),
 		url: varchar({ length: 100 }).notNull(),
 		icon: varchar({ length: 50 }).notNull(),

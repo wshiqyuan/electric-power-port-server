@@ -18,7 +18,7 @@ export const roleMenuPermissions = mysqlTable(
 		menuId: int()
 			.notNull()
 			.references(() => menuConfig.id, { onDelete: "cascade" }),
-		enabld: tinyint().default(1),
+		enabled: tinyint().default(1),
 		...timestamps,
 	},
 	(t) => [
