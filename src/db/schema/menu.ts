@@ -2,7 +2,6 @@ import {
 	index,
 	int,
 	mysqlTable,
-	serial,
 	tinyint,
 	varchar,
 } from "drizzle-orm/mysql-core";
@@ -11,7 +10,7 @@ import { timestamps } from "../columns.helpers";
 export const menuConfig = mysqlTable(
 	"menu_config",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		parentId: int().notNull(),
 		name: varchar({ length: 50 }).notNull(),
 		url: varchar({ length: 100 }).notNull(),

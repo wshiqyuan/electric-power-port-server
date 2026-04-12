@@ -2,7 +2,6 @@ import {
 	index,
 	int,
 	mysqlTable,
-	serial,
 	tinyint,
 	varchar,
 } from "drizzle-orm/mysql-core";
@@ -11,7 +10,7 @@ import { timestamps } from "../columns.helpers";
 export const usersTable = mysqlTable(
 	"system_users",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		userId: varchar({ length: 255 }).unique().notNull(),
 		username: varchar({ length: 50 }).notNull(),
 		password: varchar({ length: 255 }).notNull(),

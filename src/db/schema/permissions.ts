@@ -2,7 +2,6 @@ import {
 	index,
 	int,
 	mysqlTable,
-	serial,
 	tinyint,
 	unique,
 	varchar,
@@ -14,7 +13,7 @@ import { usersTable } from "./users";
 export const roleMenuPermissions = mysqlTable(
 	"role_menu_permissions",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		role: varchar({ length: 50 }).notNull(),
 		menuId: int()
 			.notNull()
@@ -31,7 +30,7 @@ export const roleMenuPermissions = mysqlTable(
 export const userMenuPermissions = mysqlTable(
 	"user_menu_permissions",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		userId: varchar({ length: 255 })
 			.notNull()
 			.references(() => usersTable.userId, { onDelete: "cascade" }),
@@ -51,7 +50,7 @@ export const userMenuPermissions = mysqlTable(
 export const roleButtonPermissions = mysqlTable(
 	"role_button_permissions",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		role: varchar({ length: 50 }).notNull(),
 		buttonKey: varchar({ length: 50 }).notNull(),
 		enabled: tinyint().default(1),
@@ -66,7 +65,7 @@ export const roleButtonPermissions = mysqlTable(
 export const userButtonPermissions = mysqlTable(
 	"user_button_permissions",
 	{
-		id: serial().primaryKey(),
+		id: int().autoincrement().primaryKey(),
 		userId: varchar({ length: 255 })
 			.notNull()
 			.references(() => usersTable.userId, { onDelete: "cascade" }),
