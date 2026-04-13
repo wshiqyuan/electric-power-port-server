@@ -12,7 +12,7 @@ export const usersTable = mysqlTable(
 	{
 		id: int().autoincrement().primaryKey(),
 		userId: varchar({ length: 255 }).unique().notNull(),
-		username: varchar({ length: 50 }).notNull(),
+		username: varchar({ length: 50 }).unique().notNull(),
 		password: varchar({ length: 255 }).notNull(),
 		nickname: varchar({ length: 50 }).notNull(),
 		phone: varchar({ length: 11 }).notNull(),

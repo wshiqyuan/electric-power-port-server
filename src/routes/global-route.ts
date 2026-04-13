@@ -8,8 +8,9 @@ import type { HonoEnv } from "@/types";
 import { logger as cuntomLogger } from "@/utils/logger";
 import { emitterHandlers } from "./emitter";
 
-const route = new OpenAPIHono<HonoEnv>();
 export function createBaseRoute() {
+	const route = new OpenAPIHono<HonoEnv>();
+
 	route
 		.use("*", timing({ total: true }))
 		.use("*", requestId())

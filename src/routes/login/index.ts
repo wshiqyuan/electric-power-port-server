@@ -1,60 +1,106 @@
-import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { compare } from "bcrypt-ts";
+import { and, eq, sql } from "drizzle-orm";
+import { jwt } from "hono/jwt";
+import { db } from "@/db";
+import { menuConfig } from "@/db/schema/menu";
 import {
-	loginRequestSchema,
-	userInfoSchema,
-} from "@/router-schema/login/idnex";
+	roleMenuPermissions,
+	userMenuPermissions,
+} from "@/db/schema/permissions";
+import { usersTable } from "@/db/schema/users";
 import type { HonoEnv } from "@/types";
 import { logger } from "@/utils/logger";
+import { postLogin } from "./routes/post-login";
+import type { MenuItem, MenuListTree } from "./types";
 
 const app = new OpenAPIHono<HonoEnv>();
 
-export const loginRoute = app.openapi(
-	createRoute({
-		path: "/login",
-		method: "post",
-		request: {
-			body: {
-				content: {
-					"application/json": {
-						schema: loginRequestSchema,
-					},
-				},
+export const loginRoute = app.openapi(postLogin, async (ctx) => {
+	const { username, password } = ctx.req.valid("json");
+
+	const user = await db
+		.select()
+		.from(usersTable)
+		.where(and(eq(usersTable.username, username), eq(usersTable.status, 1)))
+		.limit(1);
+	const isValid = await compare(password, user[0]?.password);
+
+	if (!isValid) {
+		return ctx.json(
+			{
+				message: "用户名或者密码错误",
 			},
-		},
-		responses: {
-			200: {
-				description: "success",
-				content: {
-					"application/json": {
-						schema: userInfoSchema,
-					},
-				},
-			},
-		},
-	}),
-	(ctx) => {
-		const { username, password } = ctx.req.query();
-		logger.info("login", `username: ${username}, password: ${password}`);
-		return ctx.json({
+			401,
+		);
+	}
+
+	const menuItems = await db
+		.select({
+			id: menuConfig.id,
+			parentId: menuConfig.parentId,
+			name: menuConfig.name,
+			url: menuConfig.url,
+			icon: menuConfig.icon,
+			enabled:
+				sql`COALESCE(${userMenuPermissions.enabled}, ${roleMenuPermissions.enabled})`.as(
+					"enabled",
+				),
+			isOverride: userMenuPermissions.isOverride,
+		})
+		.from(menuConfig)
+		.innerJoin(
+			roleMenuPermissions,
+			and(
+				eq(roleMenuPermissions.menuId, menuConfig.id),
+				eq(roleMenuPermissions.role, user[0].role),
+			),
+		)
+		.leftJoin(
+			userMenuPermissions,
+			and(
+				eq(userMenuPermissions.menuId, menuConfig.id),
+				eq(userMenuPermissions.userId, user[0].userId),
+			),
+		)
+		.where(eq(menuConfig.status, 1))
+		.orderBy(menuConfig.parentId, menuConfig.sortOrder);
+
+	function buildMenuTree(items: MenuItem[]): MenuListTree[] {
+		const map: Record<number, MenuListTree> = {};
+
+		items.forEach((item) => {
+			map[item.id] = {
+				name: item.name,
+				url: item.url,
+				icon: item.icon,
+				children: [],
+			};
+		});
+
+		const tree: MenuListTree[] = [];
+		items.forEach((item) => {
+			if (item.parentId && map[item.parentId]) {
+				map[item.parentId].children?.push({ ...map[item.id] });
+			} else {
+				tree.push(map[item.id]);
+			}
+		});
+
+		return tree;
+	}
+
+	const rootNodes = buildMenuTree(menuItems);
+
+	return ctx.json(
+		{
 			token: "adasdad1231",
 			user: {
 				username,
-				roles: ["admin"],
+				role: user[0].role,
 			},
-			menulist: [
-				{
-					name: "Dashboard",
-					path: "/dashboard",
-					icon: "dashboard",
-					children: [
-						{
-							name: "Dashboard",
-							path: "/dashboard",
-							icon: "dashboard",
-						},
-					],
-				},
-			],
-		});
-	},
-);
+			menulist: rootNodes,
+		},
+		200,
+	);
+});
