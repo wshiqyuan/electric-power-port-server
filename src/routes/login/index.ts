@@ -11,7 +11,7 @@ import {
 import { usersTable } from "@/db/schema/users";
 import type { HonoEnv } from "@/types";
 import { logger } from "@/utils/logger";
-import { postLogin } from "./routes/post-login";
+import { postLogin } from "./routes";
 import type { MenuItem, MenuListTree } from "./types";
 
 const app = new OpenAPIHono<HonoEnv>();
@@ -42,11 +42,10 @@ export const loginRoute = app.openapi(postLogin, async (ctx) => {
 			name: menuConfig.name,
 			url: menuConfig.url,
 			icon: menuConfig.icon,
-			enabled:
-				sql`COALESCE(${userMenuPermissions.enabled}, ${roleMenuPermissions.enabled})`.as(
-					"enabled",
-				),
-			isOverride: userMenuPermissions.isOverride,
+			enabled: sql`CASE WHEN ${userMenuPermissions.enabled} = 0
+					THEN ${roleMenuPermissions.enabled}
+					ELSE COALESCE(${userMenuPermissions.enabled}, ${roleMenuPermissions.enabled})
+				END`.as("enabled"),
 		})
 		.from(menuConfig)
 		.innerJoin(
@@ -70,16 +69,22 @@ export const loginRoute = app.openapi(postLogin, async (ctx) => {
 		const map: Record<number, MenuListTree> = {};
 
 		items.forEach((item) => {
-			map[item.id] = {
-				name: item.name,
-				url: item.url,
-				icon: item.icon,
-				children: [],
-			};
+			if (item.enabled) {
+				map[item.id] = {
+					name: item.name,
+					url: item.url,
+					icon: item.icon,
+					children: [],
+				};
+			}
 		});
 
 		const tree: MenuListTree[] = [];
 		items.forEach((item) => {
+			if (!map[item.id]) {
+				return;
+			}
+
 			if (item.parentId && map[item.parentId]) {
 				map[item.parentId].children?.push({ ...map[item.id] });
 			} else {

@@ -12,5 +12,4 @@ export type MenuItem = {
 	url: string;
 	icon: string;
 	enabled: unknown;
-	isOverride: number | null;
 };

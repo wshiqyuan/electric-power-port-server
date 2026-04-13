@@ -38,7 +38,6 @@ export const userMenuPermissions = mysqlTable(
 			.notNull()
 			.references(() => menuConfig.id, { onDelete: "cascade" }),
 		enabled: tinyint().default(1),
-		isOverride: tinyint().default(1),
 		...timestamps,
 	},
 	(t) => [
@@ -71,7 +70,6 @@ export const userButtonPermissions = mysqlTable(
 			.references(() => usersTable.userId, { onDelete: "cascade" }),
 		buttonKey: varchar({ length: 50 }).notNull(),
 		enabled: tinyint().default(1),
-		isOverride: tinyint().default(1),
 		...timestamps,
 	},
 	(t) => [
