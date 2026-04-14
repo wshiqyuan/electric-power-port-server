@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { compare } from "bcrypt-ts";
 import { and, eq, sql } from "drizzle-orm";
-import { jwt } from "hono/jwt";
+import { sign } from "hono/jwt";
 import { db } from "@/db";
 import { menuConfig } from "@/db/schema/menu";
 import {
@@ -97,9 +97,19 @@ export const loginRoute = app.openapi(postLogin, async (ctx) => {
 
 	const rootNodes = buildMenuTree(menuItems);
 
+	// JWT
+	const payload = {
+		sub: user[0].userId,
+		role: user[0].role,
+		exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+	};
+	const secret = process.env.JWT_SECRET as string;
+
+	const token = await sign(payload, secret);
+
 	return ctx.json(
 		{
-			token: "adasdad1231",
+			token: token,
 			user: {
 				username,
 				role: user[0].role,
