@@ -22,7 +22,7 @@ export const loginRoute = app.openapi(postLogin, async (ctx) => {
 	const user = await db
 		.select()
 		.from(usersTable)
-		.where(and(eq(usersTable.username, username), eq(usersTable.status, 1)))
+		.where(and(eq(usersTable.username, username), eq(usersTable.isDeleted, 0)))
 		.limit(1);
 	const isValid = await compare(password, user[0]?.password);
 
@@ -62,7 +62,7 @@ export const loginRoute = app.openapi(postLogin, async (ctx) => {
 				eq(userMenuPermissions.userId, user[0].userId),
 			),
 		)
-		.where(eq(menuConfig.status, 1))
+		.where(eq(menuConfig.isDeleted, 0))
 		.orderBy(menuConfig.parentId, menuConfig.sortOrder);
 
 	function buildMenuTree(items: MenuItem[]): MenuListTree[] {

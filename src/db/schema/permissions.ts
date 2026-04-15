@@ -6,14 +6,14 @@ import {
 	unique,
 	varchar,
 } from "drizzle-orm/mysql-core";
-import { timestamps } from "../columns.helpers";
+import { tableId, timestamps } from "../utils/columns.helpers";
 import { menuConfig } from "./menu";
 import { usersTable } from "./users";
 
 export const roleMenuPermissions = mysqlTable(
 	"role_menu_permissions",
 	{
-		id: int().autoincrement().primaryKey(),
+		id: tableId(),
 		role: varchar({ length: 50 }).notNull(),
 		menuId: int()
 			.notNull()
@@ -30,7 +30,7 @@ export const roleMenuPermissions = mysqlTable(
 export const userMenuPermissions = mysqlTable(
 	"user_menu_permissions",
 	{
-		id: int().autoincrement().primaryKey(),
+		id: tableId(),
 		userId: varchar({ length: 255 })
 			.notNull()
 			.references(() => usersTable.userId, { onDelete: "cascade" }),
@@ -49,7 +49,7 @@ export const userMenuPermissions = mysqlTable(
 export const roleButtonPermissions = mysqlTable(
 	"role_button_permissions",
 	{
-		id: int().autoincrement().primaryKey(),
+		id: tableId(),
 		role: varchar({ length: 50 }).notNull(),
 		buttonKey: varchar({ length: 50 }).notNull(),
 		enabled: tinyint().default(1),
@@ -64,7 +64,7 @@ export const roleButtonPermissions = mysqlTable(
 export const userButtonPermissions = mysqlTable(
 	"user_button_permissions",
 	{
-		id: int().autoincrement().primaryKey(),
+		id: tableId(),
 		userId: varchar({ length: 255 })
 			.notNull()
 			.references(() => usersTable.userId, { onDelete: "cascade" }),

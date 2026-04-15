@@ -3,7 +3,7 @@ import {
 	loginErrorResponse,
 	loginRequestSchema,
 	userInfoSchema,
-} from "@/router-schema/login/idnex";
+} from "./schema";
 
 export const postLogin = createRoute({
 	path: "/login",
