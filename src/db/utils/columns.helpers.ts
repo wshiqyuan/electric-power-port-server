@@ -1,10 +1,14 @@
-import { int, timestamp } from "drizzle-orm/mysql-core";
+import { sql } from "drizzle-orm";
+import { int, text } from "drizzle-orm/sqlite-core";
 
 export const timestamps = {
-	createdAt: timestamp().notNull().defaultNow(),
-	updatedAt: timestamp().notNull().defaultNow().onUpdateNow(),
+	createdAt: text().notNull().default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: text()
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdateFn(() => sql`CURRENT_TIMESTAMP`),
 };
 
 export function tableId() {
-	return int().autoincrement().primaryKey();
+	return int().primaryKey({ autoIncrement: true });
 }

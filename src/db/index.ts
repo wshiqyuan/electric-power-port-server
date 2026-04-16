@@ -1,11 +1,11 @@
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/libsql";
 
-if (!process.env.DATABASE_URL) {
-	throw new Error("DATABASE_URL environment variable is required.");
+if (!process.env.DB_FILE_NAME) {
+	throw new Error("DB_FILE_NAME environment variable is required.");
 }
 
 export const db = drizzle({
-	connection: process.env.DATABASE_URL,
+	connection: { url: process.env.DB_FILE_NAME },
 	casing: "snake_case",
 });
