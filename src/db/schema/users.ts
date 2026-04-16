@@ -11,17 +11,17 @@ export const usersTable = mysqlTable(
 	"system_users",
 	{
 		id: tableId(),
-		userId: varchar({ length: 255 }).unique().notNull(),
+		userId: varchar({ length: 255 }).unique().notNull(), // 用户id
 		username: varchar({ length: 50 }).unique().notNull(), // 用户名
-		password: varchar({ length: 255 }).notNull(),
+		password: varchar({ length: 255 }).notNull(), // 密码
 		nickname: varchar({ length: 50 }).notNull(), // 姓名
-		phone: varchar({ length: 11 }).notNull(),
-		idNumber: varchar({ length: 18 }).notNull(),
-		role: varchar({ length: 50 }).notNull().default("user"),
-		position: varchar({ length: 50 }).notNull(),
-		department: varchar({ length: 50 }).notNull(),
-		pageAuthority: varchar({ length: 100 }).notNull(),
-		buttonAuthority: varchar({ length: 100 }).notNull(),
+		phone: varchar({ length: 11 }).notNull(), // 手机号
+		idNumber: varchar({ length: 18 }).notNull(), // 身份证号码
+		role: varchar({ length: 50 }).notNull().default("user"), // 角色
+		position: varchar({ length: 50 }).notNull(), // 职位
+		department: varchar({ length: 50 }).notNull(), // 部门
+		pageAuthority: varchar({ length: 100 }).notNull(), // 页面权限
+		buttonAuthority: varchar({ length: 100 }).notNull(), // 按钮权限
 		isDeleted: tinyint().default(0), // 数据状态：0-正常，1-删除
 		sex: int().notNull(), // 性别：1-男，2-女
 		...timestamps,

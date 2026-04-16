@@ -14,6 +14,7 @@
 		"@cmtlyt/logger": "^0.5.0",
 		"@hono/node-server": "^1.19.12",
 		"@hono/zod-openapi": "^1.2.4",
+		"@libsql/client": "^0.17.2",
 		"@scalar/hono-api-reference": "^0.10.6",
 		"bcrypt-ts": "^8.0.1",
 		"dotenv": "^17.4.1",

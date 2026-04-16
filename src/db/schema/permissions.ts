@@ -14,11 +14,11 @@ export const roleMenuPermissions = mysqlTable(
 	"role_menu_permissions",
 	{
 		id: tableId(),
-		role: varchar({ length: 50 }).notNull(),
+		role: varchar({ length: 50 }).notNull(), // 角色名称
 		menuId: int()
 			.notNull()
-			.references(() => menuConfig.id, { onDelete: "cascade" }),
-		enabled: tinyint().default(1),
+			.references(() => menuConfig.id, { onDelete: "cascade" }), // 菜单id
+		enabled: tinyint().default(1), // 0: 禁用 1: 启用
 		...timestamps,
 	},
 	(t) => [
@@ -33,11 +33,11 @@ export const userMenuPermissions = mysqlTable(
 		id: tableId(),
 		userId: varchar({ length: 255 })
 			.notNull()
-			.references(() => usersTable.userId, { onDelete: "cascade" }),
+			.references(() => usersTable.userId, { onDelete: "cascade" }), // 用户id
 		menuId: int()
 			.notNull()
-			.references(() => menuConfig.id, { onDelete: "cascade" }),
-		enabled: tinyint().default(1),
+			.references(() => menuConfig.id, { onDelete: "cascade" }), // 菜单id
+		enabled: tinyint().default(1), // 0: 禁用 1: 启用
 		...timestamps,
 	},
 	(t) => [
@@ -50,9 +50,9 @@ export const roleButtonPermissions = mysqlTable(
 	"role_button_permissions",
 	{
 		id: tableId(),
-		role: varchar({ length: 50 }).notNull(),
-		buttonKey: varchar({ length: 50 }).notNull(),
-		enabled: tinyint().default(1),
+		role: varchar({ length: 50 }).notNull(), // 角色名称
+		buttonKey: varchar({ length: 50 }).notNull(), // 按钮key
+		enabled: tinyint().default(1), // 0: 禁用 1: 启用
 		...timestamps,
 	},
 	(t) => [
@@ -67,9 +67,9 @@ export const userButtonPermissions = mysqlTable(
 		id: tableId(),
 		userId: varchar({ length: 255 })
 			.notNull()
-			.references(() => usersTable.userId, { onDelete: "cascade" }),
-		buttonKey: varchar({ length: 50 }).notNull(),
-		enabled: tinyint().default(1),
+			.references(() => usersTable.userId, { onDelete: "cascade" }), // 用户id
+		buttonKey: varchar({ length: 50 }).notNull(), // 按钮key
+		enabled: tinyint().default(1), // 0: 禁用 1: 启用
 		...timestamps,
 	},
 	(t) => [
